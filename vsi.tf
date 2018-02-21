@@ -14,7 +14,7 @@ resource "ibm_compute_vm_instance" "webtiervm" {
   count = "${var.vm_count}"
   os_reference_code = "${var.osrefcode}"
   hostname = "${format("webtier-%02d", count.index + 1)}"
-  domain = "${var.webdomain}"
+  domain = "${var.domain}"
   datacenter = "${var.datacenter}"
   file_storage_ids = ["${module.storage.webfileid}"]
   network_speed = 10
