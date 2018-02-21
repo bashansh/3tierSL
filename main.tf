@@ -1,56 +1,25 @@
 # 3-tier MAIN.tf
-# This file runs each of the modules
+# No modules
 #
+#############################################
+#Define the providers to use
+#############################################
 
-#####################################################
-# Create Networks and subnets
-#####################################################
-
-module "network" {
-  source = "${var.network_location}"
-  datacenter = "${var.datacenter}"
-  public_router = "${var.public_router}"
-  private_router = "${var.private_router}" 
+provider "ibm" {
+  softlayer_username = "${var.ibm_sl_username}"
+  softlayer_api_key = "${var.ibm_sl_api_key}"
 }
 
-#####################################################
-# Create security groups
-#note this is not yet available in v0.5.1
-#####################################################
+########################################################
+#Create SSH key for VSIs
+########################################################
 
-#module "security" {
-#  source = "${var.security_location}"
-#  datacenter = "${var.datacenter}"
-#}
+resource "ibm_compute_ssh_key" "ssh_key" {
+  label = "${var.ssh_label}"
+  notes = "${var.ssh_notes}"
+  public_key = "${var.ssh_key}"
+}
 
-#####################################################
-# Create Storage
-#####################################################
-module "storage" {
-  source = "${var.storage_location}"
-  datacenter = "${var.datacenter}"
-}
-#####################################################
-# Create webtier
-#####################################################
-module "webtier" {
-  source = "${var.vsi_location}"
-  datacenter = "${var.datacenter}"
-}
-#####################################################
-# Create apptier
-#####################################################
-module "apptier" {
-  source = "${var.vsi_location}"
-  datacenter = "${var.datacenter}"
-}
-#####################################################
-# Create data (service) tier
-#####################################################
-module "datatier" {
-  source = "${var.data_location}"
-  datacenter = "${var.datacenter}"
-}
 #####################################################
 # Variables
 #####################################################
@@ -68,26 +37,7 @@ variable "private_router" {
   default = "bcr01a.dal13"
   description = "the router to use for the private VLAN."
 }
-variable "network_location" {
-  default = "https://github.com/bashansh/3T_SL/tree/master/network"
-  description = "the network module location"
-}
-variable "security_location" {
-  default = "https://github.com/bashansh/3T_SL/tree/master/security"
-  description = "the security module location"
-}
-variable "storage_location" {
-  default = "https://github.com/bashansh/3T_SL/tree/master/storage"
-  description = "the storage module location"
-}
-variable "vsi_location" {
-  default = "https://github.com/bashansh/3T_SL/tree/master/vsi"
-  description = "the vsi module location"
-}
-variable "data_location" {
-  default = "https://github.com/bashansh/3T_SL/tree/master/data"
-  description = "the data module location"
-}
+
 #####################################################
 # Output reused as Variables
 #####################################################
