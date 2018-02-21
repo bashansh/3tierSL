@@ -23,20 +23,8 @@ resource "ibm_compute_ssh_key" "ssh_key" {
 #####################################################
 # Variables
 #####################################################
+# datacenter & routeres in network.tf
 
-
-variable "datacenter" {
-  default = "dal13"
-  description = "the data center to deploy the VLAN."
-}
-variable "public_router" {
-  default = "fcr01a.dal13"
-  description = "the router to use for the public VLAN."
-}
-variable "private_router" {
-  default = "bcr01a.dal13"
-  description = "the router to use for the private VLAN."
-}
 
 #####################################################
 # Output reused as Variables
