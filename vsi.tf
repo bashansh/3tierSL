@@ -53,10 +53,6 @@ resource "ibm_compute_vm_instance" "apptiervm" {
 ##############################################################################
 # variables
 ##############################################################################
-variable datacenter {
-  description = "location to deploy"
-  default = "dal06"
-}
 variable domain {
   description = "domain of the VMs"
   default = "mybluemix.com"
