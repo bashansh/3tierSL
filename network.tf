@@ -72,7 +72,7 @@ variable "private_router" {
 }
 variable "port" {
    default = "9443"
-   description "load balancer port"
+   description = "load balancer port"
 }
 #variable "connections" {
 #   default = "1000"
