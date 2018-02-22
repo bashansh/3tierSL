@@ -70,6 +70,14 @@ variable "private_router" {
   default = "bcr01a.dal13"
   description = "the router to use for the private VLAN."
 }
+variable "port" {
+   default = "9443"
+   description "load balancer port"
+}
+#variable "connections" {
+#   default = "1000"
+#    description = "Set the number of connections for the local load balancer"
+#}
 ##################################################
 # outputs
 ##################################################
