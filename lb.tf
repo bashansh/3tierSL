@@ -61,14 +61,3 @@ resource "ibm_lb_service" "app_lb_service" {
   # For demonstration purposes; creates an explicit dependency
   depends_on                  = ["module.network.web_ipaddress", "module.network.app_ipaddress"]
 }
-##################################################
-# variables  (ToDo:  check port app and web ?)
-##################################################
-variable "port" {
-   default = "9443"
-    description "load balancer port"
-}
-#variable "connections" {
-#   default = "1000"
-#    description = "Set the number of connections for the local load balancer"
-#}
