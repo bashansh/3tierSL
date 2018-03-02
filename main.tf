@@ -24,6 +24,26 @@ resource "ibm_compute_ssh_key" "ssh_key" {
 ##################################################
 # DC & router variables
 ##################################################
+variable "ibm_sl_username" {
+  default = "shmuel"
+  description = "the SoftLayer user name"
+}
+variable "ibm_sl_api_key" {
+  default = ""
+  description = "the SoftLayer api key"
+}
+variable "ssh_label" {
+  default = ""
+  description = "the ssh_label"
+}
+variable "ssh_notes" {
+  default = ""
+  description = "the ssh_notes"
+}
+variable "ssh_public_key" {
+  default = ""
+  description = "the ssh_public_key"
+}
 variable "datacenter" {
   default = "dal13"
   description = "the data center to deploy the VLAN."
