@@ -1,5 +1,7 @@
 # 3-tier MAIN.tf
 #
+# Shmuel tests
+#
 #############################################
 #Define the providers to use
 #############################################
@@ -31,18 +33,6 @@ variable "ibm_sl_username" {
 variable "ibm_sl_api_key" {
   default = ""
   description = "the SoftLayer api key"
-}
-variable "ssh_label" {
-  default = ""
-  description = "the ssh_label"
-}
-variable "ssh_notes" {
-  default = ""
-  description = "the ssh_notes"
-}
-variable "ssh_public_key" {
-  default = ""
-  description = "the ssh_public_key"
 }
 
 
@@ -78,7 +68,7 @@ resource "ibm_subnet" "public_subnet" {
   private = false
   ip_version = 4
   capacity = 8
-  vlan_id = "${ibm_network_vlan.vlan_public.id}"
+  public_vlan_id = "${ibm_network_vlan.vlan_public.id}"
   notes = "portable_public_subnet"
 }
 
@@ -100,7 +90,7 @@ resource "ibm_subnet" "apptier_subnet1" {
   private = true
   ip_version = 4
   capacity = 8
-  vlan_id = "${ibm_network_vlan.vlan_private.id}"
+  private_vlan_id = "${ibm_network_vlan.vlan_private.id}"
   notes = "portable_private_web__subnet"
 }
 
@@ -109,7 +99,7 @@ resource "ibm_subnet" "apptier_subnet2" {
   private = true
   ip_version = 4
   capacity = 8
-  vlan_id = "${ibm_network_vlan.vlan_private.id}"
+  private_vlan_id = "${ibm_network_vlan.vlan_private.id}"
   notes = "portable_private_APP__subnet"
 }
 #------------------------------------
@@ -151,7 +141,7 @@ resource "ibm_compute_vm_instance" "apptiervm" {
   disks = [25, 10]
   ssh_key_ids = ["${ibm_compute_ssh_key.ssh_key.id}"]
   local_disk = false
-  private_vlan_id = "${var.private_vlan_id}"
+  private_vlan_id = "${var.vlan_private_id}"
   private_subnet = "${var.private_vlan_subnet2_id}"
 # this is where we add the security group #
 }
