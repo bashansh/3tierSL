@@ -31,10 +31,9 @@ variable "ibm_sl_username" {
   description = "the SoftLayer user name"
 }
 variable "ibm_sl_api_key" {
-  default = ""
+  default = "enter"
   description = "the SoftLayer api key"
 }
-
 
 variable "datacenter" {
   default = "dal13"
@@ -181,6 +180,26 @@ variable osrefcode {
 variable vm_count {
   default = "1"
 }
+##############################################################################
+# LB variables
+##############################################################################
+variable service_group_routing_method {
+  description = "service_group_routing_method"
+  default = "CONSISTENT_HASH_IP"
+}
+variable service_group_routing_type {
+  description = "service_group_routing_type"
+  default = "HTTP"
+}
+variable service_group_allocation {
+  description = "service_group_allocation"
+  default = "50"
+}
+#  routing_method              = "${var.service_group_routing_method}"
+#  routing_type                = "${var.service_group_routing_type}"
+#  load_balancer_id            = "${ibm_lb.lb.id}"
+#  allocation                  = "${var.service_group_allocation}"
+
 ################################################
 # Outputs
 ################################################
@@ -206,7 +225,7 @@ resource "ibm_lb" "lb" {
 # Create a service group in the loadbalancer
 ##############################################################################
 resource "ibm_lb_service_group" "lb_service_group" {
-  port                        = "${var.service_group_port}"
+  port                        = "${var.port}"
   routing_method              = "${var.service_group_routing_method}"
   routing_type                = "${var.service_group_routing_type}"
   load_balancer_id            = "${ibm_lb.lb.id}"
@@ -224,7 +243,7 @@ resource "ibm_lb_service" "web_lb_service" {
   # port to serve traffic on
   port                        = "${var.port}"
   enabled                     = true
-  service_group_id            = "${ibm_lb_service_group.lb_service_group.service_group_id}"
+  service_group_id            = "${ibm_lb_service_group.lb_service_group.load_balancer_id}"
   # Even distribution of traffic
   weight                      = 1
   # Uses HTTP to as a healthcheck
