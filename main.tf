@@ -112,16 +112,16 @@ resource "ibm_compute_vm_instance" "webtiervm" {
   hostname = "${format("webtier-%02d", count.index + 1)}"
   domain = "${var.domain}"
   datacenter = "${var.datacenter}"
-  file_storage_ids = "${var.webfileid}"
+  file_storage_ids = "${ibm_storage_file.webtierfile.id}"
   network_speed = 10
   cores = 1
   memory = 1024
   local_disk = true
   ssh_key_ids = ["${ibm_compute_ssh_key.ssh_key.id}"]
   local_disk = false
-  private_vlan_id = "${var.private_vlan_id}"
-  public_vlan_id = "${var.public_vlan_id}"
-  private_subnet = "${var.private_vlan_subnet1_id}"
+  private_vlan_id = "${ibm_network_vlan.vlan_private.id}"
+  public_vlan_id = "${ibm_network_vlan.vlan_public.public_vlan_id}"
+  # ?? private_subnet = "${var.private_vlan_subnet1_id}" "ibm_network_vlan" "vlan_public" {
 }
 
 ##############################################################################
@@ -132,16 +132,19 @@ resource "ibm_compute_vm_instance" "apptiervm" {
   os_reference_code = "${var.osrefcode}"
   hostname = "${format("apptier-%02d", count.index + 1)}"
   datacenter = "${var.datacenter}"
-  file_storage_ids = ["${var.appfileid}"]
-  block_storage_ids = ["${var.appblockid}"]
+  #"${ibm_storage_file.webtierfile.id}"
+  file_storage_ids = ["${ibm_storage_file.webtierfile.id}"]
+  #"${ibm_storage_block.apptierblock.id}"
+  block_storage_ids = ["${ibm_storage_block.apptierblock.id}"]
   network_speed = 10
   cores = 1
   memory = 1024
   disks = [25, 10]
   ssh_key_ids = ["${ibm_compute_ssh_key.ssh_key.id}"]
   local_disk = false
-  private_vlan_id = "${var.vlan_private_id}"
-  private_subnet = "${var.private_vlan_subnet2_id}"
+  #"ibm_subnet" "apptier_subnet1" private_vlan_id
+  private_vlan_id = "${ibm_subnet.apptier_subnet1.private_vlan_id}"
+  private_subnet = "${ibm_subnet.apptier_subnet2.private_vlan_id}"
 # this is where we add the security group #
 }
 
